@@ -1,0 +1,118 @@
+apply plugin: 'java'
+apply plugin: 'fr.putnami.gwt'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+      url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+    maven {
+      url uri('../../0Gradle-Repo')
+    }
+//    maven {
+//      url "https://oss.sonatype.org/content/repositories/vaadin-snapshots/"
+//    }
+//    maven {
+//      url "https://oss.sonatype.org/content/repositories/google-snapshots/"
+//    }
+  }
+  dependencies {
+//    classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.2.0' 
+    classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.3.0-SNAPSHOT'
+  }
+}
+
+
+repositories {
+  mavenCentral()
+  maven {
+    name = "sonatype"
+    url = "https://oss.sonatype.org/content/repositories/snapshots/"
+  }
+  maven {
+    name = "sonatypeGoogle"
+    url = "https://oss.sonatype.org/content/repositories/google-snapshots/"
+  }
+  maven {
+    url "https://oss.sonatype.org/content/repositories/vaadin-snapshots/"
+  } 
+  flatDir {
+    dirs 'lib'
+  }
+}
+
+
+// required for GWT validation
+configurations.all {
+  resolutionStrategy {
+      force 'org.hibernate:hibernate-validator:4.1.0.Final'
+      force 'org.hibernate:hibernate-validator:4.1.0.Final:sources'
+      force 'com.fasterxml.jackson.core:jackson-annotations:2.3.0'
+      force 'com.fasterxml.jackson.core:jackson-annotations:2.3.0:sources'
+      
+//      force 'com.google.guava:guava-gwt:20.0-SNAPSHOT-20160125.165735-51'
+  }
+}
+
+
+dependencies {
+  compile 'com.google.guava:guava-gwt:20.0-SNAPSHOT'  // GWT 2.8
+  compile 'javax.inject:javax.inject:1'
+  compile 'javax.inject:javax.inject:1:sources'
+  compile 'org.hibernate:hibernate-validator:4.1.0.Final'
+  compile 'org.hibernate:hibernate-validator:4.1.0.Final:sources'
+  compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.0'
+  compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.0:sources'
+  compile 'junit:junit:4.11'
+  compile 'com.googlecode.objectify:objectify:4.0'
+  compile 'org.slf4j:slf4j-api:1.7.10'
+  compile 'org.slf4j:slf4j-simple:1.7.10'
+  
+  compile 'com.vaadin.polymer:vaadin-gwt-polymer-elements:1.2.3.1-SNAPSHOT'  // GWT 2.8
+//  compile name: 'gwtquery-1.4.4-SNAPSHOT'
+  
+}
+
+
+putnami {
+   module 'test.Testgwt'
+  
+//  gwtVersion='2.7.0'
+  gwtVersion='2.8.0-SNAPSHOT'
+//  gwtVersion='2.8.0-beta1'  //  has bug wait for beta2
+  compile {
+    strict = true
+    generateJsInteropExports = true  // GWT 2.8
+    logLevel = "INFO"
+    
+    /** Java args */
+    maxHeapSize="1024m"
+  }
+  
+  dev {
+    strict = true
+    noServer = true
+//    bindAddress = "192.168.178.26"  // WLAN
+    bindAddress = "192.168.178.28"    // LAN
+    port = 9876
+    precompile = true
+    generateJsInteropExports = true // GWT 2.8
+    logLevel = "INFO"
+    
+    /** Java args */
+    maxHeapSize="1024m"
+  }
+  
+  
+}
+
+
+
+
